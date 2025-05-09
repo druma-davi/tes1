@@ -1,6 +1,5 @@
 import { createContext, useContext, ReactNode } from 'react';
 import { User } from '@shared/schema';
-import { getCurrentUser } from '@/lib/authApi';
 import { queryClient } from '@/lib/queryClient';
 import { useQuery } from '@tanstack/react-query';
 
@@ -25,8 +24,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     window.location.href = '/api/logout';
   };
 
-  const value = {
-    user: user || null,
+  const value: AuthContextType = {
+    user: (user as User) || null,
     isLoading,
     isAuthenticated: !!user,
     logout,

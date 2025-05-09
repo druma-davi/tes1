@@ -5,7 +5,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { AuthProvider } from "@/context/AuthContext";
-import { GoogleOAuthProvider } from '@react-oauth/google';
 
 import Header from "@/components/Header";
 import BottomNavigation from "@/components/BottomNavigation";
@@ -45,18 +44,16 @@ function Router() {
 
 function App() {
   return (
-    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ""}>
-      <ThemeProvider attribute="class" defaultTheme="light">
-        <QueryClientProvider client={queryClient}>
-          <AuthProvider>
-            <TooltipProvider>
-              <Toaster />
-              <Router />
-            </TooltipProvider>
-          </AuthProvider>
-        </QueryClientProvider>
-      </ThemeProvider>
-    </GoogleOAuthProvider>
+    <ThemeProvider attribute="class" defaultTheme="light">
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Router />
+          </TooltipProvider>
+        </AuthProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }
 
