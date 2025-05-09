@@ -8,9 +8,9 @@ import multer from 'multer';
 import ffmpeg from 'fluent-ffmpeg';
 import { insertUserSchema, insertVideoSchema, insertCommentSchema, insertFollowSchema } from "@shared/schema";
 import cookieParser from 'cookie-parser';
-import session from 'express-session';
 import { z } from 'zod';
 import { nanoid } from 'nanoid';
+import { setupAuth, isAuthenticated } from './replitAuth';
 
 // Configure multer for file uploads
 const videoStorage = multer.diskStorage({
@@ -46,50 +46,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Middleware
   app.use(cookieParser());
-  app.use(
-    session({
-      secret: process.env.SESSION_SECRET || 'tikfans_secret',
-      resave: false,
-      saveUninitialized: true,
-      cookie: { 
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
-      },
-    })
-  );
+  
+  // Set up Replit Auth
+  await setupAuth(app);
 
-  // Session-based auth middleware
-  const authenticateUser = async (req: Request, res: Response, next: Function) => {
-    const userId = req.session.userId;
-    if (!userId) {
-      return res.status(401).json({ message: 'Authentication required' });
-    }
-
-    const user = await storage.getUser(parseInt(userId as string, 10));
-    if (!user) {
-      req.session.destroy(() => {});
-      return res.status(401).json({ message: 'User not found' });
-    }
-
-    req.user = user;
-    next();
-  };
+  // We'll use isAuthenticated from replitAuth.ts for authentication
 
   // Optional auth - doesn't require login but attaches user if logged in
   const optionalAuth = async (req: Request, res: Response, next: Function) => {
-    const userId = req.session.userId;
-    if (userId) {
-      const user = await storage.getUser(parseInt(userId as string, 10));
-      if (user) {
-        req.user = user;
-      }
-    }
+    // With Replit Auth, the user will be attached to req by Passport if logged in
+    // We just need to ensure a session ID exists for tracking regardless of login state
     
     // Ensure session ID exists for tracking ad views
     if (!req.session.clientId) {
       req.session.clientId = nanoid();
     }
     
+    // If the user is logged in, req.user will already be set by Passport
+    // If not logged in, we'll still allow the request to proceed
     next();
   };
 
@@ -224,22 +198,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get('/api/auth/me', optionalAuth, (req, res) => {
-    if (req.user) {
-      // Remove password from response
-      const { password: _, ...userWithoutPassword } = req.user;
-      res.json(userWithoutPassword);
-    } else {
-      res.status(401).json({ message: 'Not authenticated' });
-    }
-  });
+  // The /api/auth/user endpoint is added by Replit Auth setup
 
-  app.post('/api/auth/logout', (req, res) => {
-    req.session.destroy(() => {
-      res.clearCookie('connect.sid');
-      res.json({ message: 'Logged out successfully' });
-    });
-  });
+  // The /api/logout endpoint is added by Replit Auth setup
 
   app.get('/api/users/:id', async (req, res) => {
     const userId = parseInt(req.params.id, 10);
@@ -265,7 +226,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put('/api/users/:id', authenticateUser, async (req, res) => {
+  app.put('/api/users/:id', isAuthenticated, async (req, res) => {
     const userId = parseInt(req.params.id, 10);
     
     if (isNaN(userId) || userId !== req.user.id) {
@@ -298,7 +259,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete('/api/users/:id', authenticateUser, async (req, res) => {
+  app.delete('/api/users/:id', isAuthenticated, async (req, res) => {
     const userId = parseInt(req.params.id, 10);
     
     if (isNaN(userId) || userId !== req.user.id) {
@@ -366,7 +327,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/videos', authenticateUser, upload.single('video'), async (req, res) => {
+  app.post('/api/videos', isAuthenticated, upload.single('video'), async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ message: 'Video file is required' });
     }
@@ -480,7 +441,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put('/api/videos/:id', authenticateUser, async (req, res) => {
+  app.put('/api/videos/:id', isAuthenticated, async (req, res) => {
     const videoId = parseInt(req.params.id, 10);
     
     if (isNaN(videoId)) {
@@ -516,7 +477,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete('/api/videos/:id', authenticateUser, async (req, res) => {
+  app.delete('/api/videos/:id', isAuthenticated, async (req, res) => {
     const videoId = parseInt(req.params.id, 10);
     
     if (isNaN(videoId)) {
@@ -637,7 +598,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/videos/:id/comments', authenticateUser, async (req, res) => {
+  app.post('/api/videos/:id/comments', isAuthenticated, async (req, res) => {
     const videoId = parseInt(req.params.id, 10);
     
     if (isNaN(videoId)) {
@@ -714,7 +675,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete('/api/comments/:id', authenticateUser, async (req, res) => {
+  app.delete('/api/comments/:id', isAuthenticated, async (req, res) => {
     const commentId = parseInt(req.params.id, 10);
     
     if (isNaN(commentId)) {
@@ -746,7 +707,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Follow routes
-  app.post('/api/users/:id/follow', authenticateUser, async (req, res) => {
+  app.post('/api/users/:id/follow', isAuthenticated, async (req, res) => {
     const followingId = parseInt(req.params.id, 10);
     
     if (isNaN(followingId)) {
@@ -785,7 +746,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete('/api/users/:id/follow', authenticateUser, async (req, res) => {
+  app.delete('/api/users/:id/follow', isAuthenticated, async (req, res) => {
     const followingId = parseInt(req.params.id, 10);
     
     if (isNaN(followingId)) {
@@ -806,7 +767,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get('/api/users/:id/following', authenticateUser, async (req, res) => {
+  app.get('/api/users/:id/following', isAuthenticated, async (req, res) => {
     const followingId = parseInt(req.params.id, 10);
     const currentUserId = req.user.id;
     
