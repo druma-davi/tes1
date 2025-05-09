@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean, timestamp, json } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, json, varchar, index } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -37,6 +37,7 @@ export const videos = pgTable("videos", {
   commentsCount: integer("comments_count").default(0),
   isPrivate: boolean("is_private").default(false),
   createdAt: timestamp("created_at").defaultNow(),
+  qualities: json("qualities").$type<string[]>(), // Available quality options: ["720p", "1080p", "1440p"]
 });
 
 export const insertVideoSchema = createInsertSchema(videos).omit({
@@ -46,6 +47,7 @@ export const insertVideoSchema = createInsertSchema(videos).omit({
   dislikes: true,
   commentsCount: true,
   createdAt: true,
+  qualities: true,
 });
 
 // Comment model
@@ -57,6 +59,7 @@ export const comments = pgTable("comments", {
   likes: integer("likes").default(0),
   parentId: integer("parent_id"), // For replies (null means top-level comment)
   createdAt: timestamp("created_at").defaultNow(),
+  image: text("image"), // Optional image URL for image comments
 });
 
 export const insertCommentSchema = createInsertSchema(comments).omit({
@@ -108,6 +111,17 @@ export const adViews = pgTable("ad_views", {
 export const insertAdViewSchema = createInsertSchema(adViews).omit({
   id: true,
   viewedAt: true,
+});
+
+// Session store for express-session
+export const sessions = pgTable("sessions", {
+  sid: varchar("sid").primaryKey(),
+  sess: json("sess").notNull(),
+  expire: timestamp("expire").notNull(),
+}, (table) => {
+  return {
+    expireIdx: index("sessions_expire_idx").on(table.expire),
+  }
 });
 
 // Types

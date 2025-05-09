@@ -289,7 +289,7 @@ const Upload = () => {
             {/* hCaptcha Area */}
             <div className="bg-light-gray/50 p-4 rounded-lg border border-light-gray flex items-center justify-center min-h-24">
               <HCaptcha
-                sitekey={process.env.HCAPTCHA_SITE_KEY || "10000000-ffff-ffff-ffff-000000000001"}
+                sitekey={import.meta.env.VITE_HCAPTCHA_SITE_KEY || "10000000-ffff-ffff-ffff-000000000001"}
                 onVerify={handleCaptchaVerify}
                 ref={captchaRef}
               />

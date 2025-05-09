@@ -43,6 +43,14 @@
       "password": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
       "followersCount": 1876,
       "followingCount": 156
+    },
+    {
+      "username": "admin",
+      "email": "seu@email.com",
+      "password": "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9",
+      "id": 5,
+      "followersCount": 0,
+      "followingCount": 0
     }
   ],
   "videos": [
@@ -55,8 +63,8 @@
       "thumbnailUrl": "/server/videos/dance_challenge_thumb.jpg",
       "duration": 32,
       "views": 45267,
-      "likes": 15284,
-      "dislikes": 42,
+      "likes": 15285,
+      "dislikes": 43,
       "commentsCount": 1253,
       "isPrivate": false,
       "createdAt": "2023-06-15T14:32:15Z"
