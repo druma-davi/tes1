@@ -1,0 +1,222 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "dancequeen",
+      "name": "Sarah Johnson",
+      "email": "sarah.johnson@example.com",
+      "bio": "Content creator | Dance enthusiast | Living my best life 💃",
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+      "password": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+      "followersCount": 1243,
+      "followingCount": 253
+    },
+    {
+      "id": 2,
+      "username": "travelguy",
+      "name": "Michael Chen",
+      "email": "michael.chen@example.com",
+      "bio": "Traveling the world one video at a time 🌎 | Adventure seeker",
+      "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+      "password": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+      "followersCount": 892,
+      "followingCount": 124
+    },
+    {
+      "id": 3,
+      "username": "fashionista",
+      "name": "Emma Rodriguez",
+      "email": "emma.rodriguez@example.com",
+      "bio": "Fashion is my passion 👗 | Style tips and outfit ideas",
+      "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80",
+      "password": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+      "followersCount": 2531,
+      "followingCount": 342
+    },
+    {
+      "id": 4,
+      "username": "chefmax",
+      "name": "Max Williams",
+      "email": "max.williams@example.com",
+      "bio": "Cooking delicious meals in under 60 seconds 🍳 | Chef | Food lover",
+      "avatar": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80",
+      "password": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+      "followersCount": 1876,
+      "followingCount": 156
+    }
+  ],
+  "videos": [
+    {
+      "id": 1,
+      "userId": 1,
+      "title": "New Dance Challenge! 🔥",
+      "description": "Trying out this viral dance move - what do you think? #dancechallenge #viral #trending",
+      "videoUrl": "/server/videos/dance_challenge.mp4",
+      "thumbnailUrl": "/server/videos/dance_challenge_thumb.jpg",
+      "duration": 32,
+      "views": 45267,
+      "likes": 15284,
+      "dislikes": 42,
+      "commentsCount": 1253,
+      "isPrivate": false,
+      "createdAt": "2023-06-15T14:32:15Z"
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "title": "Hidden Gem in Bali 🌴",
+      "description": "Found this amazing waterfall off the tourist path! #travel #bali #adventure #wanderlust",
+      "videoUrl": "/server/videos/bali_waterfall.mp4",
+      "thumbnailUrl": "/server/videos/bali_waterfall_thumb.jpg",
+      "duration": 45,
+      "views": 78532,
+      "likes": 24681,
+      "dislikes": 98,
+      "commentsCount": 3456,
+      "isPrivate": false,
+      "createdAt": "2023-06-10T09:45:22Z"
+    },
+    {
+      "id": 3,
+      "userId": 3,
+      "title": "Summer Style Tips #fashion",
+      "description": "5 must-have items for your summer wardrobe! #summeroutfits #fashiontips #stylist",
+      "videoUrl": "/server/videos/summer_fashion.mp4",
+      "thumbnailUrl": "/server/videos/summer_fashion_thumb.jpg",
+      "duration": 52,
+      "views": 102456,
+      "likes": 45291,
+      "dislikes": 124,
+      "commentsCount": 5721,
+      "isPrivate": false,
+      "createdAt": "2023-06-08T15:21:34Z"
+    },
+    {
+      "id": 4,
+      "userId": 4,
+      "title": "5-Min Dessert Recipe #cooking",
+      "description": "The easiest dessert you'll ever make! Perfect for when guests come over unexpectedly. #quickrecipe #dessert #foodie",
+      "videoUrl": "/server/videos/quick_dessert.mp4",
+      "thumbnailUrl": "/server/videos/quick_dessert_thumb.jpg",
+      "duration": 58,
+      "views": 85321,
+      "likes": 32145,
+      "dislikes": 87,
+      "commentsCount": 2987,
+      "isPrivate": false,
+      "createdAt": "2023-06-05T11:12:45Z"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "videoId": 1,
+      "userId": 2,
+      "content": "This is absolutely amazing! How long did it take you to learn this dance?",
+      "likes": 245,
+      "parentId": null,
+      "createdAt": "2023-06-16T08:23:45Z"
+    },
+    {
+      "id": 2,
+      "videoId": 1,
+      "userId": 1,
+      "content": "Thank you! It took about a week of practice 😊",
+      "likes": 87,
+      "parentId": 1,
+      "createdAt": "2023-06-16T10:45:12Z"
+    },
+    {
+      "id": 3,
+      "videoId": 1,
+      "userId": 3,
+      "content": "The editing is on point! What app do you use?",
+      "likes": 132,
+      "parentId": null,
+      "createdAt": "2023-06-15T19:34:27Z"
+    },
+    {
+      "id": 4,
+      "videoId": 2,
+      "userId": 4,
+      "content": "Wow, this place looks incredible! Is it hard to reach?",
+      "likes": 198,
+      "parentId": null,
+      "createdAt": "2023-06-11T14:25:38Z"
+    },
+    {
+      "id": 5,
+      "videoId": 2,
+      "userId": 2,
+      "content": "It's about a 45-minute hike from the main road, but totally worth it!",
+      "likes": 67,
+      "parentId": 4,
+      "createdAt": "2023-06-11T15:01:22Z"
+    }
+  ],
+  "follows": [
+    {
+      "id": 1,
+      "followerId": 2,
+      "followingId": 1,
+      "createdAt": "2023-05-20T11:23:45Z"
+    },
+    {
+      "id": 2,
+      "followerId": 3,
+      "followingId": 1,
+      "createdAt": "2023-05-22T09:45:12Z"
+    },
+    {
+      "id": 3,
+      "followerId": 4,
+      "followingId": 1,
+      "createdAt": "2023-05-18T14:32:56Z"
+    },
+    {
+      "id": 4,
+      "followerId": 1,
+      "followingId": 2,
+      "createdAt": "2023-05-19T16:54:23Z"
+    },
+    {
+      "id": 5,
+      "followerId": 1,
+      "followingId": 3,
+      "createdAt": "2023-05-21T08:12:34Z"
+    }
+  ],
+  "ads": [
+    {
+      "id": 1,
+      "title": "Discover Our New Collection",
+      "description": "Experience premium quality that fits your lifestyle. Limited time offer!",
+      "videoUrl": "/server/ads/fashion_brand_ad.mp4",
+      "brandName": "FashionBrand",
+      "brandLogo": "https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+      "actionUrl": "https://example.com/fashion-brand",
+      "createdAt": "2023-06-01T10:23:45Z"
+    },
+    {
+      "id": 2,
+      "title": "Summer Travel Deals",
+      "description": "Book your dream vacation now and save up to 30%. Offer ends soon!",
+      "videoUrl": "/server/ads/travel_agency_ad.mp4",
+      "brandName": "TravelEscape",
+      "brandLogo": "https://images.unsplash.com/photo-1594844081634-76e73e962d0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+      "actionUrl": "https://example.com/travel-agency",
+      "createdAt": "2023-06-02T12:34:56Z"
+    },
+    {
+      "id": 3,
+      "title": "Revolutionary Fitness App",
+      "description": "Transform your body with personalized workout plans. Try free for 30 days!",
+      "videoUrl": "/server/ads/fitness_app_ad.mp4",
+      "brandName": "FitLife",
+      "brandLogo": "https://images.unsplash.com/photo-1586826721578-bc3854e0e4a3?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+      "actionUrl": "https://example.com/fitness-app",
+      "createdAt": "2023-06-03T08:45:12Z"
+    }
+  ],
+  "adViews": []
+}
