@@ -50,12 +50,16 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 type RegisterFormValues = z.infer<typeof registerSchema>;
 
 const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
-  const { login, register: registerUser, googleLogin } = useAuth();
   const { toast } = useToast();
-  const [view, setView] = useState<ModalView>('main');
   const [isLoading, setIsLoading] = useState(false);
+  const [view, setView] = useState<ModalView>('main');
   
-  // Login form
+  // Redirect to Replit login
+  const handleReplitLogin = () => {
+    window.location.href = '/api/login';
+  };
+  
+  // Dummy forms to maintain component structure
   const loginForm = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -74,76 +78,14 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
     },
   });
   
-  // Handle login submission
-  const onLoginSubmit = async (values: LoginFormValues) => {
-    setIsLoading(true);
-    try {
-      await login(values.username, values.password);
-      toast({
-        title: 'Login successful',
-        description: 'You are now logged in',
-      });
-      onClose();
-    } catch (error) {
-      toast({
-        title: 'Login failed',
-        description: error instanceof Error ? error.message : 'An error occurred',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsLoading(false);
-    }
+  // Handle login submission (redirects to Replit Auth)
+  const onLoginSubmit = () => {
+    handleReplitLogin();
   };
   
-  // Handle registration submission
-  const onRegisterSubmit = async (values: RegisterFormValues) => {
-    setIsLoading(true);
-    try {
-      await registerUser(values.username, values.email, values.password);
-      toast({
-        title: 'Registration successful',
-        description: 'Your account has been created',
-      });
-      onClose();
-    } catch (error) {
-      toast({
-        title: 'Registration failed',
-        description: error instanceof Error ? error.message : 'An error occurred',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  
-  // Handle Google login success
-  const handleGoogleSuccess = async (credentialResponse: any) => {
-    try {
-      setIsLoading(true);
-      await googleLogin(credentialResponse.credential);
-      toast({
-        title: 'Login successful',
-        description: 'You are now logged in with Google',
-      });
-      onClose();
-    } catch (error) {
-      toast({
-        title: 'Google login failed',
-        description: error instanceof Error ? error.message : 'An error occurred',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  
-  // Handle Google login error
-  const handleGoogleError = () => {
-    toast({
-      title: 'Google login failed',
-      description: 'Could not authenticate with Google',
-      variant: 'destructive',
-    });
+  // Handle registration submission (redirects to Replit Auth)
+  const onRegisterSubmit = () => {
+    handleReplitLogin();
   };
   
   // Handle "Continue as Guest" button
@@ -188,23 +130,11 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
                 <Button 
                   variant="outline" 
                   className="w-full" 
-                  onClick={() => setView('login')}
+                  onClick={handleReplitLogin}
                 >
                   <Mail className="mr-2 h-4 w-4" />
-                  Continue with Email
+                  Login with Replit
                 </Button>
-                
-                <div className="flex justify-center py-2">
-                  <GoogleLogin
-                    onSuccess={handleGoogleSuccess}
-                    onError={handleGoogleError}
-                    useOneTap
-                    theme="outline"
-                    size="large"
-                    text="continue_with"
-                    shape="rectangular"
-                  />
-                </div>
               </div>
               
               <div className="flex items-center my-6">

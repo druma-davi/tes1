@@ -68,7 +68,7 @@ export async function googleLogin(credential: string): Promise<User> {
 // Get the currently logged in user
 export async function getCurrentUser(): Promise<User | null> {
   try {
-    const response = await fetch('/api/auth/me', {
+    const response = await fetch('/api/auth/user', {
       credentials: 'include',
     });
     
@@ -88,14 +88,13 @@ export async function getCurrentUser(): Promise<User | null> {
 
 // Logout the current user
 export async function logoutUser(): Promise<void> {
-  const response = await fetch('/api/auth/logout', {
-    method: 'POST',
+  const response = await fetch('/api/logout', {
+    method: 'GET',
     credentials: 'include',
   });
   
   if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || 'Logout failed');
+    throw new Error('Logout failed');
   }
 }
 
